@@ -1,0 +1,19 @@
+# ~/.tmuxinator/depot.yml
+# you can make as many tabs as you wish...
+
+project_name: depot 
+project_root: ~/Projects/depot  
+tabs:
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim
+        - #empty, will just run plain bash
+        - node
+  - shell: git pull
+  - database: 
+      layout: even-vertical
+      panes:
+        - mongo
+        - redis-cli
+  - server: nodemon app.js
