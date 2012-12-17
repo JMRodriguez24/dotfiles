@@ -27,6 +27,8 @@ filetype on
 filetype plugin on
 filetype indent on
 
+let $TMP="C:/tmp/"
+
 set fileformat=unix
 
 " paste toggle
@@ -268,7 +270,26 @@ augroup vimrc_autocmds
     au Syntax * RainbowParenthesesLoadBraces
 augroup END
 
-let $TMP="C:/tmp/"
+"-----------------------------------------------------------------------------
+" Rainbow Paren colors
+"-----------------------------------------------------------------------------
+let g:rbpt_colorpairs = [
+    \ ['yellow',  'orange1'],
+	\ ['green',   'yellow1'],
+	\ ['cyan',    'greenyellow'],
+	\ ['magenta', 'green1'],
+	\ ['red',     'springgreen1'],
+	\ ['yellow',  'cyan1'],
+	\ ['green',   'slateblue1'],
+	\ ['cyan',    'magenta1'],
+	\ ['magenta', 'purple1'],
+    \ ['darkcyan','SeaGreen3'],
+    \ ['darkred', 'DarkOrchid3'],
+    \ ['red',     'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 1
 
 "-----------------------------------------------------------------------------
 " Set up the window colors and size

@@ -1,13 +1,32 @@
+set nocompatible
 filetyp off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
                        
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'scrooloose/nerdtree'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'paredit.vim'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'guns/vim-clojure-static'
+Bundle 'tpope/vim-foreplay'
+Bundle 'xptemplate'
+Bundle 'EasyGrep'
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+
 "Set filetype stuff to on
 filetype on
 filetype plugin on
 filetype indent on
 
-" paste toggle
+" paste TogGle
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
@@ -21,6 +40,10 @@ set autoindent
 
 "XPTemplate variables
 let g:xptemplate_brace_complete = ''
+
+" Font
+let g:main_font = "DejaVu\\ Sans\\ Mono\\ 10"
+let g:small_font = "DejaVu\\ Sans\\ Mono\\ 2"
 
 " Printing options
 set printoptions=header:0,duplex:long,paper:letter
@@ -77,6 +100,10 @@ set guicursor=n-v-c:block-Cursor-blinkon0,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ve
 " set the gui options the way I like
 set guioptions=acg
 
+nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
+nnoremap <C-F2> :if &go=~#'T'<Bar>set go-=T<Bar>else<Bar>set go+=T<Bar>endif<CR>
+nnoremap <C-F3> :if &go=~#'r'<Bar>set go-=r<Bar>else<Bar>set go+=r<Bar>endif<CR>
+
 " Setting this below makes it sow that error messages don't disappear after one second on startup.
 "set debug=msg
 
@@ -88,7 +115,7 @@ set guioptions=acg
 "      "," key and the "d" key.  If the "d" key isn't pressed before the
 "      timeout expires, one of two things happens: The "," command is executed
 "      if there is one (which there isn't) or the command aborts.
-set timeoutlen=500
+set timeoutlen=800
 
 " Keep some stuff in the history
 set history=100
@@ -151,13 +178,42 @@ set number
 
 " System default for mappings is now the "," character
 let mapleader = ","
+let maplocalleader = "\\"
 
 " cd to the directory containing the file in the buffer
 nmap <silent> ,cd :lcd %:h<CR>
 
 " Edit the vimrc file
-nmap <silent> ,ev :e $MYVIMRC<CR>
-nmap <silent> ,sv :so $MYVIMRC<CR>
+nmap <silent> <Leader>ev :e $MYVIMRC<CR>
+nmap <silent> <Leader>sv :so $MYVIMRC<CR>
+
+" Insert mode mappings
+inoremap jk <esc>
+inoremap <esc> <nop>
+
+inoremap II <Esc>I
+inoremap AA <Esc>A
+inoremap OO <Esc>O
+
+inoremap CC <Esc>C
+inoremap SS <Esc>S
+inoremap DD <Esc>ddi
+inoremap UU <Esc>ui
+
+" remove arrow key mappings 
+inoremap <Left> <nop>
+inoremap <Right> <nop>
+inoremap <Up> <nop>
+inoremap <Down> <nop>
+
+nnoremap <Left> <nop>
+nnoremap <Right> <nop>
+nnoremap <Up> <nop>      
+nnoremap <Down> <nop>
+
+" Use very magic mode for inc search
+nnoremap / /\\v
+nnoremap ? ?\\v
 
 "Let the syntax highlighting for Java files allow cpp keywords
 let java_allow_cpp_keywords = 1
@@ -187,3 +243,77 @@ let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
                     \ '\.intermediate\.manifest$', '^mt.dep$' ]
 
 
+" Make C-v paste
+noremap <C-v> <MiddleMouse>
+
+" Make shift-insert work like in Xterm
+map <S-Insert> <MiddleMouse>
+map! <S-Insert> <MiddleMouse>
+
+" set text wrapping toggles
+nmap <silent> ,ww :set invwrap<CR>:set wrap?<CR>
+
+" Turn of search highlighting
+nmap <silent> ,n :nohls<CR>
+
+" Maps Alt-[n,p] for moving next and previous window respectively
+nmap <silent> <C-n> <C-w><C-w>
+nmap <silent> <C-p> <C-w><S-w>
+
+" Maps fuzzyfinder help 
+nmap <Leader>h :FufHelp<CR>
+nmap <Leader>t :FufCoverageFile<CR>
+
+" taglist settings
+let tlist_clojure_settings = 'lisp;f:function'
+
+augroup vimrc_autocmds
+    autocmd!
+    autocmd FileType clojure set tags^=$HOME/.tags/clojure/tags,$HOME/.tags/clojurescript/tags,./tags
+    au VimEnter * RainbowParenthesesToggle
+    au Syntax * RainbowParenthesesLoadRound
+    au Syntax * RainbowParenthesesLoadSquare
+    au Syntax * RainbowParenthesesLoadBraces
+augroup END
+
+"-----------------------------------------------------------------------------
+" Rainbow Paren colors
+"-----------------------------------------------------------------------------
+let g:rbpt_colorpairs = [
+    \ ['yellow',  'orange1'],
+	\ ['green',   'yellow1'],
+	\ ['cyan',    'greenyellow'],
+	\ ['magenta', 'green1'],
+	\ ['red',     'springgreen1'],
+	\ ['yellow',  'cyan1'],
+	\ ['green',   'slateblue1'],
+	\ ['cyan',    'magenta1'],
+	\ ['magenta', 'purple1'],
+    \ ['darkcyan','SeaGreen3'],
+    \ ['darkred', 'DarkOrchid3'],
+    \ ['red',     'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 1
+
+"-----------------------------------------------------------------------------
+" Set up the window colors and size
+"-----------------------------------------------------------------------------
+if has("gui_running")
+  if hostname() == "dqw-linux"
+    set background=light
+  else
+    set background=dark
+  endif
+  colorscheme solarized
+  if !exists("g:vimrcloaded")
+      winpos 0 0
+      if !&diff
+          winsize 130 120
+      else
+          winsize 227 120
+      endif
+      let g:vimrcloaded = 1
+  endif
+endif                          
