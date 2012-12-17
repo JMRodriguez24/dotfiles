@@ -167,8 +167,6 @@ set clipboard+=unnamed
 " Automatically read a file that has changed on disk
 set autoread
 
-set grepprg=grep\ -nH\ $*
-
 " Trying out the line numbering thing... never liked it, but that doesn't mean
 " I shouldn't give it another go :)
 set number
